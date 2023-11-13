@@ -1,0 +1,46 @@
+import { useContext } from 'react';
+import PlanetContext from '../context/myContext';
+
+function TablePlanets() {
+  const { planets } = useContext(PlanetContext);
+  const tableHeaderNames = ['Name', 'Rotation Period',
+    'Orbital Period', 'Diameter', 'Climate', 'Gravity',
+    'Terrain', 'Surface Water', 'Population', 'Films',
+    'Created', 'Edited', 'URL'];
+  return (
+    <div>
+      <table>
+        <thead>
+          <tr>
+            {tableHeaderNames.map((name) => (
+              <th key={ name }>
+                {name}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {planets.map((planet) => (
+            <tr key={ planet.name }>
+              <td>{planet.name}</td>
+              <td>{planet.rotation_period}</td>
+              <td>{planet.orbital_period}</td>
+              <td>{planet.diameter}</td>
+              <td>{planet.climate}</td>
+              <td>{planet.gravity}</td>
+              <td>{planet.terrain}</td>
+              <td>{planet.surface_water}</td>
+              <td>{planet.population}</td>
+              <td>{planet.films}</td>
+              <td>{planet.created}</td>
+              <td>{planet.edited}</td>
+              <td>{planet.url}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default TablePlanets;
