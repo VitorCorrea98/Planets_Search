@@ -44,7 +44,7 @@ function App() {
 
   const handleFilter = () => {
     const { column, comparison, inputValue } = formData;
-    const formFiltered = backUpList.filter((planet: any) => {
+    const formFiltered = planetsList.filter((planet: any) => {
       const columnToBeFiltered = planet[column];
       switch (comparison) {
         case 'maior que':
