@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { APIType, FilterFormInitialValue, FilterFormType } from './type';
+import {
+  APIType, ComparisonListInitial, FilterFormInitialValue, FilterFormType } from './type';
 import TablePlanets from './components/TablePlanets';
 import PlanetContext from './context/myContext';
 import FormFilter from './components/FormFilter';
@@ -10,6 +11,7 @@ function App() {
   const [backUpList, setBackUpList] = useState<APIType[]>([]);
   const [filtersList, setFiltersList] = useState<FilterFormType[]>([]);
   const [formData, setFormData] = useState<FilterFormType>(FilterFormInitialValue);
+  const [comparisonList, setComparisonList] = useState(ComparisonListInitial);
 
   const APIFetch = async () => {
     try {
@@ -58,6 +60,7 @@ function App() {
       }
     });
     setPlanetsList(formFiltered);
+    setComparisonList(comparisonList.filter((item) => item !== column));
     setFiltersList((prev) => ([
       ...prev,
       formData,
@@ -76,7 +79,7 @@ function App() {
   return (
     <PlanetContext.Provider
       value={ { planets: { planetsList },
-        filters: { filter: filtersList, handleChange } } }
+        filters: { filter: filtersList, handleChange, comparisonList } } }
     >
       <FormFilter
         handleSubmit={ handleSubmit }

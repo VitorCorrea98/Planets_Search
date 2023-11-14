@@ -9,7 +9,7 @@ type FormFilterProps = {
 };
 
 function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
-  const { filters: { handleChange } } = useContext(RootContext);
+  const { filters: { handleChange, comparisonList } } = useContext(RootContext);
   const { column, comparison, inputValue } = formData;
   return (
     <>
@@ -26,11 +26,14 @@ function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
           value={ column }
           data-testid="column-filter"
         >
-          <option value="population">population</option>
+          {comparisonList.map((item) => (
+            <option value={ item } key={ item }>{item}</option>
+          ))}
+          {/* <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          <option value="surface_water">surface_water</option> */}
         </select>
 
         <select

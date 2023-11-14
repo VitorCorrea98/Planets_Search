@@ -28,8 +28,17 @@ export type ContextType = {
       inputValue: number
     }[],
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
+    comparisonList: string[]
   }
 };
+
+export const ComparisonListInitial = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
 
 export type FilterFormType = {
   column: string,
