@@ -70,6 +70,7 @@ function App() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleFilter();
+    setFormData({ ...formData, column: comparisonList[0] });
   };
 
   useEffect(() => {
