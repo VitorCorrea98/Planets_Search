@@ -1,26 +1,27 @@
 import { useContext } from 'react';
-import PlanetContext from '../context/myContext';
+import RootContext from '../context/myContext';
 
 function TablePlanets() {
-  const { planets } = useContext(PlanetContext);
+  const { planets: { planetsList } } = useContext(RootContext);
   const tableHeaderNames = ['Name', 'Rotation Period',
     'Orbital Period', 'Diameter', 'Climate', 'Gravity',
     'Terrain', 'Surface Water', 'Population', 'Films',
     'Created', 'Edited', 'URL'];
+
   return (
     <div>
       <table>
         <thead>
           <tr>
-            {tableHeaderNames.map((name) => (
-              <th key={ name }>
-                {name}
+            {tableHeaderNames.map((header) => (
+              <th key={ header }>
+                {header}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {planets.map((planet) => (
+          {planetsList.map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
@@ -31,7 +32,11 @@ function TablePlanets() {
               <td>{planet.terrain}</td>
               <td>{planet.surface_water}</td>
               <td>{planet.population}</td>
-              <td>{planet.films}</td>
+              <td className="films">
+                {planet.films.map((film) => (
+                  <p key={ film }>{film}</p>
+                ))}
+              </td>
               <td>{planet.created}</td>
               <td>{planet.edited}</td>
               <td>{planet.url}</td>

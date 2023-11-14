@@ -1,8 +1,16 @@
 import { createContext } from 'react';
 import { ContextType } from '../type';
 
-const PlanetContext = createContext<ContextType>({
-  planets: [],
+const RootContext = createContext<ContextType>({
+  planets: {
+    planetsList: [],
+  },
+  filters: {
+    handleChange: () => {},
+    filter: {
+      name: '',
+    },
+  },
 });
 
-export default PlanetContext;
+export default RootContext;
