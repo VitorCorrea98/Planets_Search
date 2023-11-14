@@ -1,35 +1,46 @@
 import React, { useContext } from 'react';
 import RootContext from '../context/myContext';
+import { FilterFormType } from '../type';
 
 type FormFilterProps = {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  formData: FilterFormType;
+  handleName: (e: React.ChangeEvent<HTMLInputElement>) => void
 };
 
-function FormFilter({ handleSubmit }: FormFilterProps) {
-  const { filters:
-    { filter: { name, column, comparison, inputValue },
-      handleChange } } = useContext(RootContext);
+function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
+  const { filters: { handleChange } } = useContext(RootContext);
+  const { column, comparison, inputValue } = formData;
   return (
     <>
       <input
         type="text"
         id="name"
-        value={ name }
-        onChange={ handleChange }
+        onChange={ handleName }
         data-testid="name-filter"
       />
       <form onSubmit={ handleSubmit }>
-        <select id="column" onChange={ handleChange } value={ column }>
-          <option value="population">Population</option>
-          <option value="orbital_period">Orbital Period</option>
-          <option value="diameter">Diameter</option>
-          <option value="rotation_period">Rotation Period</option>
-          <option value="surface_water">Surface Water</option>
+        <select
+          id="column"
+          onChange={ handleChange }
+          value={ column }
+          data-testid="column-filter"
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
         </select>
 
-        <select id="comparison" onChange={ handleChange } value={ comparison }>
-          <option value="maiorQue">maior que</option>
-          <option value="menorQue">menor que</option>
+        <select
+          id="comparison"
+          onChange={ handleChange }
+          value={ comparison }
+          data-testid="comparison-filter"
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
           <option value="igual">igual a</option>
         </select>
 
@@ -38,8 +49,9 @@ function FormFilter({ handleSubmit }: FormFilterProps) {
           id="inputValue"
           onChange={ handleChange }
           value={ inputValue }
+          data-testid="value-filter"
         />
-        <button>Enviar</button>
+        <button data-testid="button-filter">Enviar</button>
       </form>
     </>
   );

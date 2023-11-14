@@ -15,31 +15,30 @@ export type APIType = {
   residents?: any
 };
 
+export type PlanetType = { [x: string]: string };
+
 export type ContextType = {
   planets: {
     planetsList: APIType[]
   },
   filters: {
     filter: {
-      name: string,
       column: string,
       comparison: string
-      inputValue: string
-    },
-    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+      inputValue: number
+    }[],
+    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
   }
 };
 
 export type FilterFormType = {
-  name: string,
   column: string,
   comparison: string,
-  inputValue: string
+  inputValue: number
 };
 
 export const FilterFormInitialValue = {
-  name: '',
   column: 'population',
-  comparison: 'maiorQue',
-  inputValue: '',
+  comparison: 'maior que',
+  inputValue: 0,
 };

@@ -7,9 +7,7 @@ const RootContext = createContext<ContextType>({
   },
   filters: {
     handleChange: () => {},
-    filter: {
-      name: '',
-    },
+    filter: [],
   },
 });
 
