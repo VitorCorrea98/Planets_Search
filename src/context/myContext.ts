@@ -6,11 +6,16 @@ const RootContext = createContext<ContextType>({
     planetsList: [],
   },
   filters: {
-    handleChange: () => {},
+    handleChange: () => { },
     filter: [],
     columnList: [],
-    handleDelete: () => {},
-    deleteAllFilter: () => {},
+    handleDelete: () => { },
+    deleteAllFilter: () => { },
+    handleOrder: () => { },
+  },
+  order: {
+    column: 'population',
+    sort: '',
   },
 });
 

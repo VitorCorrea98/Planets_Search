@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import {
-  APIType, ColumnListInitial, FilterFormInitialValue, FilterFormType } from './type';
+  APIType, ColumnListInitial,
+  FilterFormInitialValue, FilterFormType, OrderType } from './type';
 import TablePlanets from './components/TablePlanets';
 import PlanetContext from './context/myContext';
 import FormFilter from './components/FormFilter';
 import filterColumn from './services/filterColumn';
+import sortFilter from './services/sortFilter';
 
 function App() {
   const [planetsList, setPlanetsList] = useState<APIType[]>([]);
@@ -13,6 +15,7 @@ function App() {
   const [filtersList, setFiltersList] = useState<FilterFormType[]>([]);
   const [formData, setFormData] = useState<FilterFormType>(FilterFormInitialValue);
   const [columnList, setColumnList] = useState(ColumnListInitial);
+  const [order, setOrder] = useState<OrderType>({ column: 'population', sort: '' });
 
   const APIFetch = async () => {
     try {
@@ -35,6 +38,15 @@ function App() {
     }));
   };
 
+  const handleOrderChange = (e:
+  React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { value, name } = e.target;
+    setOrder((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       const newList = backUpList
@@ -43,6 +55,11 @@ function App() {
     } else {
       setPlanetsList(backUpList);
     }
+  };
+
+  const handleClickOrder = () => {
+    const sortPlanetList = sortFilter(planetsList, order);
+    setPlanetsList(sortPlanetList);
   };
 
   const checkColumn = (column: string) => {
@@ -66,10 +83,8 @@ function App() {
       .filter((element) => element.column !== form.column);
     setFiltersList(remainingFilters);
 
-    const newPlanetList = remainingFilters.reduce((acc, curr) => {
-      return filterColumn(acc, curr);
-    }, backUpList);
-
+    const newPlanetList = remainingFilters
+      .reduce((acc, curr) => filterColumn(acc, curr), backUpList);
     setPlanetsList(newPlanetList);
 
     checkColumn(form.column);
@@ -103,12 +118,15 @@ function App() {
           columnList,
           handleDelete,
           deleteAllFilter,
-        } } }
+          handleOrder: handleOrderChange,
+        },
+        order } }
     >
       <FormFilter
         handleSubmit={ handleSubmit }
         formData={ formData }
         handleName={ handleName }
+        handleOrderClick={ handleClickOrder }
       />
       <TablePlanets />
     </PlanetContext.Provider>

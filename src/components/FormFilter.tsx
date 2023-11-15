@@ -1,16 +1,20 @@
 import React, { useContext } from 'react';
 import RootContext from '../context/myContext';
-import { FilterFormType } from '../type';
+import { ColumnListInitial, FilterFormType } from '../type';
 
 type FormFilterProps = {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   formData: FilterFormType;
-  handleName: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOrderClick: () => void
 };
 
-function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
-  const { filters: { handleChange, columnList } } = useContext(RootContext);
+function FormFilter({
+  handleSubmit, formData, handleName, handleOrderClick }: FormFilterProps) {
+  const { filters: { handleChange, columnList, handleOrder },
+    order } = useContext(RootContext);
   const { column, comparison, inputValue } = formData;
+  const { column: columnSort } = order;
   return (
     <>
       <input
@@ -55,6 +59,44 @@ function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
           data-testid="value-filter"
         />
         <button data-testid="button-filter">Enviar</button>
+
+        <select
+          name="column"
+          id="columnSort"
+          onChange={ handleOrder }
+          value={ columnSort }
+          data-testid="column-sort"
+        >
+          {ColumnListInitial.map((item) => (
+            <option value={ item } key={ item }>{item}</option>
+          ))}
+        </select>
+
+        <input
+          type="radio"
+          name="sort"
+          id="asc"
+          value="ASC"
+          onChange={ handleOrder }
+          data-testid="column-sort-input-asc"
+        />
+        <input
+          type="radio"
+          name="sort"
+          id="dsc"
+          value="DESC"
+          onChange={ handleOrder }
+          data-testid="column-sort-input-desc"
+        />
+
+        <button
+          type="button"
+          onClick={ handleOrderClick }
+          data-testid="column-sort-button"
+        >
+          Ordenar
+        </button>
+
       </form>
     </>
   );

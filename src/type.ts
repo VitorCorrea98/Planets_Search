@@ -15,7 +15,12 @@ export type APIType = {
   residents?: any
 };
 
-export type PlanetType = { [x: string]: string };
+export type OrderFilterType = 'ASC' | 'DSC';
+
+export type OrderType = {
+  column: string,
+  sort: string
+};
 
 export type ContextType = {
   planets: {
@@ -30,7 +35,12 @@ export type ContextType = {
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
     columnList: string[],
     handleDelete: (form: FilterFormType) => void,
-    deleteAllFilter: () => void
+    deleteAllFilter: () => void,
+    handleOrder: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+  },
+  order: {
+    column: string,
+    sort: string
   }
 };
 
