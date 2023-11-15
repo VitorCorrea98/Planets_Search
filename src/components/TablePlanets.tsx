@@ -2,7 +2,8 @@ import { useContext } from 'react';
 import RootContext from '../context/myContext';
 
 function TablePlanets() {
-  const { planets: { planetsList } } = useContext(RootContext);
+  const { planets: { planetsList },
+    filters: { filter, handleDelete, deleteAllFilter } } = useContext(RootContext);
   const tableHeaderNames = ['Name', 'Rotation Period',
     'Orbital Period', 'Diameter', 'Climate', 'Gravity',
     'Terrain', 'Surface Water', 'Population', 'Films',
@@ -10,6 +11,23 @@ function TablePlanets() {
 
   return (
     <div>
+      {filter && filter.map((element) => (
+        <div key={ element.column } data-testid="filter">
+          <span>{element.column}</span>
+          <span>{element.comparison}</span>
+          <span>{element.inputValue}</span>
+          <button
+            onClick={ () => handleDelete(element) }
+          >
+            X
+          </button>
+        </div>
+      ))}
+      <div>
+        <button onClick={ deleteAllFilter } data-testid="button-remove-filters">
+          Delete all filters
+        </button>
+      </div>
       <table>
         <thead>
           <tr>

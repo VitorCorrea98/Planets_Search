@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import {
-  APIType, ComparisonListInitial, FilterFormInitialValue, FilterFormType } from './type';
+  APIType, ColumnListInitial, FilterFormInitialValue, FilterFormType } from './type';
 import TablePlanets from './components/TablePlanets';
 import PlanetContext from './context/myContext';
 import FormFilter from './components/FormFilter';
+import filterColumn from './services/filterColumn';
 
 function App() {
   const [planetsList, setPlanetsList] = useState<APIType[]>([]);
   const [backUpList, setBackUpList] = useState<APIType[]>([]);
   const [filtersList, setFiltersList] = useState<FilterFormType[]>([]);
   const [formData, setFormData] = useState<FilterFormType>(FilterFormInitialValue);
-  const [comparisonList, setComparisonList] = useState(ComparisonListInitial);
+  const [columnList, setColumnList] = useState(ColumnListInitial);
 
   const APIFetch = async () => {
     try {
@@ -44,33 +45,50 @@ function App() {
     }
   };
 
-  const handleFilter = () => {
-    const { column, comparison, inputValue } = formData;
-    const formFiltered = planetsList.filter((planet: any) => {
-      const columnToBeFiltered = planet[column];
-      switch (comparison) {
-        case 'maior que':
-          return Number(columnToBeFiltered) > Number(inputValue);
-        case 'menor que':
-          return Number(columnToBeFiltered) < Number(inputValue);
-        case 'igual':
-          return Number(columnToBeFiltered) === Number(inputValue);
-        default:
-          return false;
-      }
-    });
+  const checkColumn = (column: string) => {
+    const check = columnList.includes(column);
+    if (check) {
+      setColumnList(columnList.filter((item) => item !== column));
+    } else {
+      setColumnList([...columnList, column]);
+    }
+  };
+
+  const handleFilter = (form: FilterFormType, list: APIType[]) => {
+    const { column } = form;
+    const formFiltered = filterColumn(list, form);
     setPlanetsList(formFiltered);
-    setComparisonList(comparisonList.filter((item) => item !== column));
+    checkColumn(column);
+  };
+
+  const handleDelete = (form: FilterFormType) => {
+    const remainingFilters = filtersList
+      .filter((element) => element.column !== form.column);
+    setFiltersList(remainingFilters);
+
+    const newPlanetList = remainingFilters.reduce((acc, curr) => {
+      return filterColumn(acc, curr);
+    }, backUpList);
+
+    setPlanetsList(newPlanetList);
+
+    checkColumn(form.column);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleFilter(formData, planetsList);
+    setFormData({ ...formData, column: columnList[0] });
     setFiltersList((prev) => ([
       ...prev,
       formData,
     ]));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleFilter();
-    setFormData({ ...formData, column: comparisonList[0] });
+  const deleteAllFilter = () => {
+    setFiltersList([]);
+    setColumnList(ColumnListInitial);
+    setPlanetsList(backUpList);
   };
 
   useEffect(() => {
@@ -80,7 +98,12 @@ function App() {
   return (
     <PlanetContext.Provider
       value={ { planets: { planetsList },
-        filters: { filter: filtersList, handleChange, comparisonList } } }
+        filters: { filter: filtersList,
+          handleChange,
+          columnList,
+          handleDelete,
+          deleteAllFilter,
+        } } }
     >
       <FormFilter
         handleSubmit={ handleSubmit }

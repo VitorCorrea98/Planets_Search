@@ -6,7 +6,6 @@ const useAPIFetch = async () => {
     const { results } = await response.json();
     const data: APIType[] = results;
     data.forEach((planet) => delete planet.residents);
-    console.log(data);
     return data;
   } catch (error) {
     return error;

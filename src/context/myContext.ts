@@ -8,6 +8,9 @@ const RootContext = createContext<ContextType>({
   filters: {
     handleChange: () => {},
     filter: [],
+    columnList: [],
+    handleDelete: () => {},
+    deleteAllFilter: () => {},
   },
 });
 

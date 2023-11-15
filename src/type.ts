@@ -28,11 +28,13 @@ export type ContextType = {
       inputValue: number
     }[],
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
-    comparisonList: string[]
+    columnList: string[],
+    handleDelete: (form: FilterFormType) => void,
+    deleteAllFilter: () => void
   }
 };
 
-export const ComparisonListInitial = [
+export const ColumnListInitial = [
   'population',
   'orbital_period',
   'diameter',

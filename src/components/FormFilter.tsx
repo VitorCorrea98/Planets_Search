@@ -9,7 +9,7 @@ type FormFilterProps = {
 };
 
 function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
-  const { filters: { handleChange, comparisonList } } = useContext(RootContext);
+  const { filters: { handleChange, columnList } } = useContext(RootContext);
   const { column, comparison, inputValue } = formData;
   return (
     <>
@@ -26,7 +26,7 @@ function FormFilter({ handleSubmit, formData, handleName }: FormFilterProps) {
           value={ column }
           data-testid="column-filter"
         >
-          {comparisonList.map((item) => (
+          {columnList.map((item) => (
             <option value={ item } key={ item }>{item}</option>
           ))}
           {/* <option value="population">population</option>
