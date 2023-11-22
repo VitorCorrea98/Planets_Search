@@ -16,13 +16,18 @@ function FormFilter({
   const { column, comparison, inputValue } = formData;
   const { column: columnSort } = order;
   return (
-    <>
-      <input
-        type="text"
-        id="name"
-        onChange={ handleName }
-        data-testid="name-filter"
-      />
+    <header className="flex flex-col items-center bg-slate-600">
+      <label htmlFor="name" className="p-2">
+        Pesquise o nome de um planeta:
+        {' '}
+        <input
+          type="text"
+          id="name"
+          onChange={ handleName }
+          data-testid="name-filter"
+          className="outline-none"
+        />
+      </label>
       <form onSubmit={ handleSubmit }>
         <select
           id="column"
@@ -72,22 +77,30 @@ function FormFilter({
           ))}
         </select>
 
-        <input
-          type="radio"
-          name="sort"
-          id="asc"
-          value="ASC"
-          onChange={ handleOrder }
-          data-testid="column-sort-input-asc"
-        />
-        <input
-          type="radio"
-          name="sort"
-          id="dsc"
-          value="DESC"
-          onChange={ handleOrder }
-          data-testid="column-sort-input-desc"
-        />
+        <div className="flex ">
+          <label htmlFor="asc">
+            Ascendente
+            <input
+              type="radio"
+              name="sort"
+              id="asc"
+              value="ASC"
+              onChange={ handleOrder }
+              data-testid="column-sort-input-asc"
+            />
+          </label>
+          <label htmlFor="dsc">
+            Descendente
+            <input
+              type="radio"
+              name="sort"
+              id="dsc"
+              value="DESC"
+              onChange={ handleOrder }
+              data-testid="column-sort-input-desc"
+            />
+          </label>
+        </div>
 
         <button
           type="button"
@@ -98,7 +111,7 @@ function FormFilter({
         </button>
 
       </form>
-    </>
+    </header>
   );
 }
 

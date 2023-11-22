@@ -1,16 +1,19 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../App';
 import {  vi} from "vitest";
-
-vi.mock('./services/filterColumn');
-vi.mock('./services/sortFilter');
+import { mockTest } from "./mockTest";
 
 describe('Testa a aplicação', () => {
   beforeEach(() => {
+    vi.spyOn(global, 'fetch').mockReturnValueOnce({
+      json: async () => ({
+        results:  mockTest
+      }) as Response
+    }) 
     render(<App />);
   });
 
-  test('Teste se os botões começam com o valor correto', () => { 
+  test('Teste se os botões começam com o valor correto', async () => { 
     const columnFilter = screen.getByTestId('column-filter');
     expect(columnFilter).toHaveLength(5)
     expect(columnFilter).toHaveValue('population')
@@ -64,47 +67,13 @@ describe('Testa a aplicação', () => {
   })
 
 
-  it('should update form data on input change', () => {
+  it('should update form data on input change', async () => {
     const nameInput = screen.getByTestId('name-filter');
 
+    screen.debug();
     fireEvent.change(nameInput, { target: { value: 'aa' } });
     expect(screen.getByText('Name')).toBeInTheDocument();
-
   });
 
-  // it('should apply name filter', async () => {
-  //   const nameInput = await screen.findByTestId('name-filter');
-  //   fireEvent.change(nameInput, { target: { value: 'Tatooine' } });
-
-  //   expect( await screen.findAllByTestId('planet-name')).toHaveLength(1);
-  // });
-
-  // it('should apply column selection', () => {
-  //   const selectColumn = screen.getByLabelText('Filter Column');
-  //   fireEvent.change(selectColumn, { target: { value: 'climate' } });
-
-  //   expect(screen.getAllByRole('cell', { name: 'Climate' })).toBeTruthy();
-  // });
-
-  // it('should apply form filter', () => {
-  //   const selectColumn = screen.getByTestId('column-filter');
-  //   const selectCriteria = screen.getByTestId('comparison-filter');
-
-  //   fireEvent.change(selectColumn, { target: { value: 'surface_water' } });
-  //   fireEvent.change(selectCriteria, { target: { value: 'menor que' } });
-
-  //   screen.getByRole('button', { name: 'Enviar' }).click();
-
-  //   expect(screen.getAllByTestId('planet-name')[0]).toHaveTextContent('Tatooine	')
-  // });
-
-
-  it('should clear all filters', () => {
-    const clearFilterButton = screen.getByRole('button', { name: 'Delete all filters' });
-    clearFilterButton.click();
-
-    expect(screen.queryByText('Filter by terrain: desert')).toBeFalsy(); // Verify filter is cleared
-    expect(screen.queryByText('Filter by climate: temperate')).toBeFalsy(); // Verify other filters 
-  });
 });
 

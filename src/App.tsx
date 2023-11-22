@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
 import {
   APIType, ColumnListInitial,
   FilterFormInitialValue, FilterFormType, OrderType } from './type';
